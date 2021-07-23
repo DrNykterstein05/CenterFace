@@ -37,16 +37,16 @@ def computeCropping(detection):
     left_eye_x, left_eye_y = getKeypoint(
         detection, mp_face_detection.FaceKeyPoint.LEFT_EYE)
     nose_lenght = nose_y - left_eye_y
-    head_width = right_ear_x - left_ear_x
+    head_width = left_ear_x - right_ear_x
     if head_width < MINIMUM_HEAD_WIDTH:
         head_width = MINIMUM_HEAD_WIDTH
     if nose_lenght < MINIMUM_FACE_HEIGHT:
         nose_lenght = MINIMUM_FACE_HEIGHT
     computed_coords = [
-        round(left_ear_x - head_width * (1 + MARGINFACTOR)),
-        round(left_eye_y - nose_lenght * (1 + MARGINFACTOR)),
-        round(right_ear_x + head_width * (1 + MARGINFACTOR)),
-        round(mouth_y + nose_lenght * (1 + MARGINFACTOR)),
+        round(right_ear_x - head_width / 2 * (1 + MARGINFACTOR)),
+        round(left_eye_y - nose_lenght / 2 * (1 + MARGINFACTOR)),
+        round(left_ear_x + head_width / 2 * (1 + MARGINFACTOR)),
+        round(mouth_y + nose_lenght / 2 * (1 + MARGINFACTOR)),
         computeAngle(left_ear_x, right_ear_x, left_ear_y, right_ear_y, ),
         (nose_x, nose_y)
     ]
@@ -63,7 +63,7 @@ def validateCropping(original_coords):
             new_coords[1] = 1
             new_coords[0] = original_coords[0] - (original_coords[2] - WINDOW_WIDTH)
             new_coords[3] = original_coords[3] + abs(original_coords[1])
-        if original_coords[3] >= WINDOW_HEIGHT:
+        elif original_coords[3] >= WINDOW_HEIGHT:
             new_coords[3] = WINDOW_HEIGHT - 1
             new_coords[1] = original_coords[1] - (original_coords[3] - WINDOW_HEIGHT)
             new_coords[0] = original_coords[0] - (original_coords[2] - WINDOW_WIDTH)
@@ -79,7 +79,7 @@ def validateCropping(original_coords):
             new_coords[1] = 1
             new_coords[2] = original_coords[2] + abs(original_coords[0])
             new_coords[3] = original_coords[3] + abs(original_coords[1])
-        if original_coords[3] >= WINDOW_HEIGHT:
+        elif original_coords[3] >= WINDOW_HEIGHT:
             new_coords[3] = WINDOW_HEIGHT - 1
             new_coords[2] = original_coords[2] + abs(original_coords[0])
             new_coords[1] = original_coords[1] - (original_coords[3] - WINDOW_HEIGHT)
@@ -188,7 +188,6 @@ with mp_face_detection.FaceDetection(
         faceHeight = 0
         if results.detections:
             for detection in results.detections:
-                mp_drawing.draw_detection(original_image, detection)
                 cropped_coords = computeCropping(detection)
                 validated_coords = validateCropping(cropped_coords)
                 coords_storage.insert(0, validated_coords)
@@ -197,12 +196,11 @@ with mp_face_detection.FaceDetection(
                                              smoothed_coords[5])
                 cropped_image = rotated_image[smoothed_coords[1]:smoothed_coords[3],
                                 smoothed_coords[0]:smoothed_coords[2]]
+                mp_drawing.draw_detection(original_image, detection)
         try:
             cropped_image = cv2.resize(cropped_image, (WINDOW_WIDTH, WINDOW_HEIGHT))
 
         except:
-            print("Outer")
-            print(coords_storage[0])
             cropped_image = original_image[coords_storage[0][1]:coords_storage[0][3],
                             coords_storage[0][0]:coords_storage[0][2]]
             cropped_image = cv2.resize(cropped_image, (WINDOW_WIDTH, WINDOW_HEIGHT))

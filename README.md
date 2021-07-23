@@ -24,3 +24,7 @@ Winkel gemacht. Dadurch erfolgt ein sehr viel angenehmeres Bild, da nicht jede k
 Ausgeben werden der Durchschnitt der jeweiligen Koordinaten und des Winkels.
 5. Bild um den Winkel drehen: rotateImage() benötigt das Bild, den Winkel und die Koordinaten des Drehpunkts. Der Winkel
 wurde wie in 3. beschrieben berechnet. Als Drehpunkt benuztzen wir die Nase. Ausgegeben wird das rotierte Bild.
+## Lokale Ausführung
+Für die lokale Ausführung ist eine Python inklusive pip Installation nötig. Um die nötigen Bibliotheken zu installieren
+`pip install -r requirements.txt` aufrufen.
+Zum Start des Programms `python CenterFace.py` ausführen.

@@ -9,7 +9,7 @@ ROTATION_THRESHOLD = 5
 
 mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 success, original_image = cap.read()
 WINDOW_WIDTH = original_image.shape[1]
 WINDOW_HEIGHT = original_image.shape[0]

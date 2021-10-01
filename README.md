@@ -28,3 +28,4 @@ wurde wie in 3. beschrieben berechnet. Als Drehpunkt benuztzen wir die Nase. Aus
 Für die lokale Ausführung ist eine Python inklusive pip Installation nötig. Um die nötigen Bibliotheken zu installieren
 `pip install -r requirements.txt` aufrufen.
 Zum Start des Programms `python CenterFace.py` ausführen.
+Im Falle, dass das Programm nicht starten sollte, in Zeile 12 statt <cap = cv2.VideoCapture(0)> <cap = cv2.VideoCapture(1)> probieren.
